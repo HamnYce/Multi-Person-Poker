@@ -17,9 +17,9 @@ public class Player {
         counter += 1;
     }
 
-    public String getName() {
-        return this.name;
-    }
+    public String getName() { return this.name; }
+
+    public String getHand() { return Arrays.toString(hand); }
 
     protected void setupHand(Card a, Card b) {
         hand[0] = a;
@@ -49,7 +49,7 @@ public class Player {
         * causes Game to remove player from active players*/
     }
 
-    //TODO::don't mistake with call
+    //TODO::don't mistake check with call
     protected void check(int amount) {
         //contains enoughMoney(amount) and if yes then can check else
         //has to go all in.

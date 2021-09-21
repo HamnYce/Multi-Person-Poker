@@ -35,26 +35,15 @@ public class Game {
     }
 
     public void firstRound() {
-        //Opening Deal
+        boolean raised = true;
         givePocketCards();
-
-        //Place Bets
-        //TODO::Move to raise()
-        //TODO::Create Check()
+        //display hand cards
         for (Player player : activePlayers) {
-            System.out.println("How much would " + player.getName() + " Like to Bet?");
-            int playerBet = player.bet();
-            while (playerBet == 0) {
-                System.out.println("You do not have enough money");
-                playerBet = player.bet();
-            }
-            if (playerBet == -1) {
-                removePlayer(player);
-                continue;
-            }
-            pot += playerBet;
+            System.out.println(player.getHand());
         }
-        //The flop; Add 3 cards to middle pile.
+        System.out.println( Menu.getChoicelist() );
+
+
         flop();
     }
 
@@ -67,8 +56,8 @@ public class Game {
         for (int i = 0; i < 3; i++) {
             communityCards.add(deck.drawCard());
             //Display Community Cards
-            System.out.println("Community Cards Are:" + communityCards.toString());
         }
+        System.out.println("Community Cards Are:" + communityCards.toString());
     }
 
 
