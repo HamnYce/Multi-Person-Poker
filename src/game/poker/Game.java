@@ -3,6 +3,7 @@ package game.poker;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Game {
     public final List<Player> activePlayers = new ArrayList<>();
@@ -38,10 +39,28 @@ public class Game {
         boolean raised = true;
         givePocketCards();
         //display hand cards
-        for (Player player : activePlayers) {
-            System.out.println(player.getHand());
-        }
+        displayHands();
+
         System.out.println( Menu.getChoicelist() );
+        int playersCounter = activePlayers.size();
+        for (int i = 0; (i % activePlayers.size()) < playersCounter; i++) {
+            String choice = new Scanner(System.in).next();
+            //when someone raises resest counter
+            //use flag to change the text of check to call
+            //can check for 0 dollars.
+            //when someone folds remove them
+            if (choice.equals("fold")) {
+                removePlayer(player);
+                i--;
+                continue;
+            }
+            if (choice.equals("call")) {
+            }
+            if (choice.equals("raise")) {
+                playersCounter = activePlayers.size() + (i % activePlayers.size());
+            }
+        }
+
 
 
         flop();
@@ -66,5 +85,11 @@ public class Game {
         //NOTE activate remove player when player.fold()
         //for loop ask each player in playRound()
         //TODO::remove active player using playerID
+    }
+
+    public void displayHands() {
+        for (Player player : activePlayers) {
+            System.out.println(player.getHand());
+        }
     }
 }
