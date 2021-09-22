@@ -34,22 +34,17 @@ public class Player {
         int amount = input.nextInt();
 
         if (enoughMoney(amount)) {
-            loseMoney(amount);
+            betMoney(amount);
             return amount;
         }
         System.out.println("Sorry but you don't have enough money");
         return 0;
-        //TODO::Add this money to the center pot (money pool)
     }
 
     protected int fold() {
         return -1;
-        /*
-        * add fold method
-        * causes Game to remove player from active players*/
     }
 
-    //TODO::don't mistake check with call
     protected void check(int amount) {
         //contains enoughMoney(amount) and if yes then can check else
         //has to go all in.
@@ -59,7 +54,7 @@ public class Player {
         this.money += amount;
     }
 
-    protected void loseMoney(int amount) { this.money -= amount; }
+    protected void betMoney(int amount) { this.money -= amount; }
 
     private boolean enoughMoney(int amount) {
         if (this.money - amount >= 0) return true;

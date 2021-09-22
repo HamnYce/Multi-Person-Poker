@@ -1,93 +1,102 @@
 package game.poker;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Game {
-    public final List<Player> activePlayers = new ArrayList<>();
+    public final Queue<Player> activePlayers = new LinkedList<>();
+    //TODO::at end change arraylist to array
     private final List<Card> communityCards = new ArrayList<>();
     public final Deck deck = new Deck(true);
-    private int pot;
+    private int pot = 0;
 
     public List<Card> getCommunityCards() {
         return communityCards;
     }
 
-    public List<Player> getActivePlayers() {
+    public Queue<Player> getActivePlayers() {
         return activePlayers;
     }
 
     public int getPot() { return pot; }
 
-    public void addPlayer(String name, int money) {
-        Player newPlayer = new Player(name, money);
-        activePlayers.add(newPlayer);
+    public Card getCard() { return deck.drawCard(); }
+
+    public Player newPlayer(String name, int money) {
+        return new Player(name, money);
     }
 
-    protected void givePocketCards() {
-        //TODO::test to see if you can just put deck.drawCard straight into setupHand
+    public void givePocketCards() {
+        //TODO::Make Protected at end
         for (Player player : activePlayers) {
-            Card card1 = deck.drawCard();
-            Card card2 = deck.drawCard();
-            player.setupHand(card1, card2);
+            player.setupHand(getCard(), getCard());
         }
     }
 
-    public void firstRound() {
-        boolean raised = true;
-        givePocketCards();
-        //display hand cards
-        displayHands();
+    public void joinPlayers() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("How many players?");
+        int numberOfPlayers = input.nextInt();
 
-        System.out.println( Menu.getChoicelist() );
-        int playersCounter = activePlayers.size();
-        for (int i = 0; (i % activePlayers.size()) < playersCounter; i++) {
-            String choice = new Scanner(System.in).next();
-            //when someone raises resest counter
-            //use flag to change the text of check to call
-            //can check for 0 dollars.
-            //when someone folds remove them
-            if (choice.equals("fold")) {
-                removePlayer(player);
-                i--;
-                continue;
-            }
-            if (choice.equals("call")) {
-            }
-            if (choice.equals("raise")) {
-                playersCounter = activePlayers.size() + (i % activePlayers.size());
-            }
+        for (int i = 0; i < numberOfPlayers; i++) {
+            System.out.printf("Player %d please enter your details: %n", i+1);
+
+            System.out.println("Player Name: ");
+            String name = input.next();
+            System.out.println("\nPlayer Money: ");
+            int money = input.nextInt();
+            activePlayers.add(newPlayer(name, money));
         }
-
-
-
-        flop();
     }
 
+    public void cycleChoice() {
+        Scanner input = new Scanner(System.in);
+        int nextRound = activePlayers.size();
+        int currentBet = 0;
+        Outerloop:
+        while (true) {
+            if (nextRound == 0 || activePlayers.size() == 1) { break; }
 
-    private void secondRound() {/*second round of betting*/}
+            Player currentPlayer = activePlayers.peek();
 
-    private void thirdRound() {/*third round of betting*/}
+            System.out.println(currentPlayer.getName() + "1 for fold, 2 for call/check, 3 for raise");
+
+            int choice = input.nextInt();
+            switch (choice) {
+                case 1:
+                    System.out.println("Folded");
+                    activePlayers.remove();
+                    break Outerloop;
+                case 2:
+                    System.out.println("called");
+                    nextRound--;
+                    break;
+                case 3:
+                    System.out.println("raised");
+                    pot += currentPlayer.bet();
+                    nextRound = activePlayers.size();
+                    break;
+            }
+            backOfTheLine(activePlayers.peek());
+        }
+        System.out.println("current active players" + activePlayers);
+        System.out.println("cycle ended");
+    }
 
     private void flop() {
         for (int i = 0; i < 3; i++) {
-            communityCards.add(deck.drawCard());
+            communityCards.add(getCard());
             //Display Community Cards
         }
-        System.out.println("Community Cards Are:" + communityCards.toString());
+        System.out.println("Community Cards Are:" + communityCards);
     }
 
+    protected void addPlayer(Player player) { activePlayers.add(player); }
 
-    protected void removePlayer(Player player) {
-        activePlayers.remove(player);
-        //NOTE activate remove player when player.fold()
-        //for loop ask each player in playRound()
-        //TODO::remove active player using playerID
-    }
+    protected void removePlayer() { activePlayers.remove(); }
 
-    public void displayHands() {
+    protected void backOfTheLine(Player player) { addPlayer(player); removePlayer();}
+
+    public void TEST_DisplayHands() {
         for (Player player : activePlayers) {
             System.out.println(player.getHand());
         }
