@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Game {
     public final Queue<Player> activePlayers = new LinkedList<>();
-    //TODO::at end change arraylist to array
+    //TODO::at end change arraylist<Card> to array
     private final List<Card> communityCards = new ArrayList<>();
     public final Deck deck = new Deck(true);
     private int pot = 0;
@@ -12,15 +12,11 @@ public class Game {
     public List<Card> getCommunityCards() {
         return communityCards;
     }
-
     public Queue<Player> getActivePlayers() {
         return activePlayers;
     }
-
     public int getPot() { return pot; }
-
     public Card getCard() { return deck.drawCard(); }
-
     public Player newPlayer(String name, int money) {
         return new Player(name, money);
     }
@@ -51,35 +47,41 @@ public class Game {
     public void cycleChoice() {
         Scanner input = new Scanner(System.in);
         int nextRound = activePlayers.size();
-        int currentBet = 0;
         Outerloop:
         while (true) {
             if (nextRound == 0 || activePlayers.size() == 1) { break; }
 
             Player currentPlayer = activePlayers.peek();
-
-            System.out.println(currentPlayer.getName() + "1 for fold, 2 for call/check, 3 for raise");
-
+            String playerName = currentPlayer.getName();
+            int currentRaise = 0;
+            System.out.println(playerName + "1 for fold, 2 for call/check, 3 for raise");
             int choice = input.nextInt();
             switch (choice) {
-                case 1:
-                    System.out.println("Folded");
-                    activePlayers.remove();
-                    break Outerloop;
-                case 2:
-                    System.out.println("called");
+                case 1 -> {
+                    System.out.println(playerName + " folded");
+                    removePlayer();
+                    continue Outerloop;
+                }
+                case 2 -> {
+                    //we will assume for now that the player has sufficient money
+                    System.out.println(playerName + " called");
+                    pot = currentPlayer.call();
                     nextRound--;
-                    break;
-                case 3:
-                    System.out.println("raised");
-                    pot += currentPlayer.bet();
-                    nextRound = activePlayers.size();
-                    break;
+                }
+                case 3 -> {
+                    System.out.println(playerName + " raised");
+                    System.out.println("How much would you like to raise?");
+                    pot += currentPlayer.raise();
+
+                    nextRound = activePlayers.size() - 1;
+                }
+                default -> {
+                    System.out.println("invalid entry");
+                }
             }
-            backOfTheLine(activePlayers.peek());
+            backOfTheLine(currentPlayer);
         }
         System.out.println("current active players" + activePlayers);
-        System.out.println("cycle ended");
     }
 
     private void flop() {

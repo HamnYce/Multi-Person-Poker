@@ -9,6 +9,7 @@ public class Player {
     private String name;
     public int id = counter;
     private int money;
+    protected int callAmount = 0;
     private final Card[] hand = new Card[2];
 
     public Player(String name, int money) {
@@ -22,22 +23,31 @@ public class Player {
     public String getHand() { return Arrays.toString(hand); }
 
     protected void setupHand(Card a, Card b) {
-        hand[0] = a;
-        hand[1] = b;
+        hand[0] = a; hand[1] = b;
     }
 
-    protected int bet() {
-        //all in is bet with max amount of money
-        Scanner input = new Scanner(System.in);
-        System.out.println("How much would you like to bet?");
-
-        int amount = input.nextInt();
-
-        if (enoughMoney(amount)) {
-            betMoney(amount);
-            return amount;
+    protected int call() {
+        if (enoughMoney(callAmount)) {
+            betMoney(callAmount);
+            System.out.println("You called for $" + callAmount);
+            return callAmount;
         }
-        System.out.println("Sorry but you don't have enough money");
+        System.out.println("you don't have enough money");
+        return 0;
+    }
+
+    protected int raise() {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("How much would you like to raise?");
+        int raiseAmount = input.nextInt();
+        int totalAmount = raiseAmount + callAmount;
+        if (enoughMoney(totalAmount)) {
+            betMoney(totalAmount);
+            System.out.println("You have raised by $" + raiseAmount);
+            return totalAmount;
+        }
+        System.out.println("You don't have enough money");
         return 0;
     }
 
@@ -58,7 +68,8 @@ public class Player {
 
     private boolean enoughMoney(int amount) {
         if (this.money - amount >= 0) return true;
-        else return false;
+
+        return false;
     }
 
     @Override
