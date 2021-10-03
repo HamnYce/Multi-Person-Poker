@@ -4,6 +4,7 @@ public class Card {
     protected String suit;
     protected int value;
 
+    //TODO::Try Converting to inner class
     public Card(String suit, int value) {
         this.suit = suit;
         this.value = value;

@@ -29,35 +29,30 @@ public class Player {
     protected int call() {
         if (enoughMoney(callAmount)) {
             betMoney(callAmount);
-            System.out.println("You called for $" + callAmount);
+            System.out.println(name + ", called for $" + callAmount);
             return callAmount;
         }
         System.out.println("you don't have enough money");
         return 0;
     }
 
-    protected int raise() {
+    protected int[] raise() {
         Scanner input = new Scanner(System.in);
 
-        System.out.println("How much would you like to raise?");
         int raiseAmount = input.nextInt();
         int totalAmount = raiseAmount + callAmount;
+
         if (enoughMoney(totalAmount)) {
             betMoney(totalAmount);
-            System.out.println("You have raised by $" + raiseAmount);
-            return totalAmount;
+            System.out.println(name + " has raised by $" + raiseAmount);
+            return new int[] {totalAmount, raiseAmount};
         }
         System.out.println("You don't have enough money");
-        return 0;
+        return new int[] {0, 0};
     }
 
     protected int fold() {
         return -1;
-    }
-
-    protected void check(int amount) {
-        //contains enoughMoney(amount) and if yes then can check else
-        //has to go all in.
     }
 
     protected void gainMoney(int amount) {
@@ -70,6 +65,10 @@ public class Player {
         if (this.money - amount >= 0) return true;
 
         return false;
+    }
+
+    protected void increaseCallAmount(int amount) {
+        this.callAmount += amount;
     }
 
     @Override

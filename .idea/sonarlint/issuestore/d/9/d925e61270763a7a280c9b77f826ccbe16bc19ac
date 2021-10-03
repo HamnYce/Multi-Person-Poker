@@ -1,0 +1,26 @@
+
+H
+java:S1135"2Complete the task associated to this TODO comment.(…ğÃ£
+M
+java:S1135"2Complete the task associated to this TODO comment.(¼±öÌşÿÿÿÿ
+N	java:S106!"9Replace this use of System.out or System.err by a logger.(Ùìïô
+S	java:S106%"9Replace this use of System.out or System.err by a logger.(£Şìïÿÿÿÿÿ
+S	java:S106'"9Replace this use of System.out or System.err by a logger.( òÿŒÿÿÿÿÿ
+N	java:S106)"9Replace this use of System.out or System.err by a logger.(Àã£ä
+Q
+java:S11192";Refactor the code to remove this label and the need for it.(Ø‚—œ
+N	java:S106J"9Replace this use of System.out or System.err by a logger.(Ûû°“
+2
+java:S6205W"Remove this redundant block.(üØô
+N	java:S106X"9Replace this use of System.out or System.err by a logger.(ìíÒˆ
+S	java:S106]"9Replace this use of System.out or System.err by a logger.(¶Ÿ•èÿÿÿÿÿ
+N	java:S106^"9Replace this use of System.out or System.err by a logger.(ğ˜ÖÉ
+M
+java:S1135a"2Complete the task associated to this TODO comment.(Ãæüşÿÿÿÿ
+N	java:S106g"9Replace this use of System.out or System.err by a logger.(§Ô¹¼
+M
+java:S1135j"2Complete the task associated to this TODO comment.(Ãæüşÿÿÿÿ
+N	java:S106m"9Replace this use of System.out or System.err by a logger.(Ñ§‹È
+c	java:S100~"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¦ÈÎï
+T	java:S106€"9Replace this use of System.out or System.err by a logger.(¡ù¢èÿÿÿÿÿ
+s	java:S1353"YReduce the total number of break and continue statements in this loop to use at most one.(˜ïˆÿÿÿÿÿ

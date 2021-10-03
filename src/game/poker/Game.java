@@ -16,7 +16,7 @@ public class Game {
         return activePlayers;
     }
     public int getPot() { return pot; }
-    public Card getCard() { return deck.drawCard(); }
+    public Card getRandomCard() { return deck.drawCard(); }
     public Player newPlayer(String name, int money) {
         return new Player(name, money);
     }
@@ -24,7 +24,7 @@ public class Game {
     public void givePocketCards() {
         //TODO::Make Protected at end
         for (Player player : activePlayers) {
-            player.setupHand(getCard(), getCard());
+            player.setupHand(getRandomCard(), getRandomCard());
         }
     }
 
@@ -53,26 +53,35 @@ public class Game {
 
             Player currentPlayer = activePlayers.peek();
             String playerName = currentPlayer.getName();
-            int currentRaise = 0;
-            System.out.println(playerName + "1 for fold, 2 for call/check, 3 for raise");
+
+            Menu.getChoiceList(playerName);
+
             int choice = input.nextInt();
             switch (choice) {
                 case 1 -> {
-                    System.out.println(playerName + " folded");
+                    Menu.getFolded(playerName);
                     removePlayer();
                     continue Outerloop;
                 }
                 case 2 -> {
                     //we will assume for now that the player has sufficient money
-                    System.out.println(playerName + " called");
+                    Menu.getCalled(playerName);
                     pot = currentPlayer.call();
                     nextRound--;
                 }
                 case 3 -> {
-                    System.out.println(playerName + " raised");
+                    Menu.getRaised(playerName);
                     System.out.println("How much would you like to raise?");
-                    pot += currentPlayer.raise();
+                    int[] temp = currentPlayer.raise();
 
+                    int total = temp[0]; //totalAmount
+                    int raise = temp[1]; //raiseAmount
+                    if (total == 0) {
+                        continue Outerloop;
+                    }
+                    pot += total;
+                    incrementCallAmount(currentPlayer, raise);
+                    //subtract by one because we are technically calling our own raise.
                     nextRound = activePlayers.size() - 1;
                 }
                 default -> {
@@ -82,14 +91,22 @@ public class Game {
             backOfTheLine(currentPlayer);
         }
         System.out.println("current active players" + activePlayers);
+        System.out.println("Current Pot is: $" + pot);
     }
 
-    private void flop() {
+    //TODO::private
+    public void flop() {
         for (int i = 0; i < 3; i++) {
-            communityCards.add(getCard());
+            communityCards.add(getRandomCard());
             //Display Community Cards
         }
         System.out.println("Community Cards Are:" + communityCards);
+    }
+
+    //TODO::private
+    public void revealCard() {
+        communityCards.add(getRandomCard());
+        System.out.println("Community Cards:\n" + communityCards);
     }
 
     protected void addPlayer(Player player) { activePlayers.add(player); }
@@ -97,6 +114,14 @@ public class Game {
     protected void removePlayer() { activePlayers.remove(); }
 
     protected void backOfTheLine(Player player) { addPlayer(player); removePlayer();}
+
+    protected void incrementCallAmount(Player currentPlayer, int amount) {
+        for (Player player : activePlayers) {
+            if (player != currentPlayer) {
+                player.increaseCallAmount(amount);
+            }
+        }
+    }
 
     public void TEST_DisplayHands() {
         for (Player player : activePlayers) {

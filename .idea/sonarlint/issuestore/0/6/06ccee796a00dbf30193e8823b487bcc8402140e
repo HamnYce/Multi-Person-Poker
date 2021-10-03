@@ -1,0 +1,14 @@
+
+H
+java:S1135"2Complete the task associated to this TODO comment.(µîø
+?
+java:S3010"$Remove this assignment of "counter".(Î‹âÛüÿÿÿÿ
+N	java:S106 "9Replace this use of System.out or System.err by a logger.(â¹À¬
+S	java:S106#"9Replace this use of System.out or System.err by a logger.(ã¢Ìıÿÿÿÿ
+N	java:S106/"9Replace this use of System.out or System.err by a logger.(ÑÇ
+M	java:S1062"9Replace this use of System.out or System.err by a logger.(âàØ
+W
+java:S1126A"AReplace this if-then-else statement by a single return statement.(½·Àı
+i
+java:S1104
+"NMake id a static final constant or non-public and provide accessors if needed.(øç¬ˆÿÿÿÿÿ
